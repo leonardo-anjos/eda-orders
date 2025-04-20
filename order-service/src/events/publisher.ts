@@ -2,7 +2,7 @@ import amqp from 'amqplib';
 
 let conn: any = null;
 let ch: any = null;
-const exchange = 'order_exchange';
+const exchange = 'orders_exchange';
 
 async function initializeRabbitMQ() {
   if (!conn) {
