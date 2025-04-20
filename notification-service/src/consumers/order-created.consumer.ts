@@ -13,10 +13,10 @@ export async function consumeOrderCreated(channel: Channel) {
   channel.consume(queue, (msg) => {
     if (msg) {
       const data = JSON.parse(msg.content.toString());
-      console.log('📢 Notificação: Pedido criado para o usuário', data.userId);
+      console.log('📢 Notification: Order created for user', data.userId);
       channel.ack(msg);
     }
   });
 
-  console.log(`🎧 Escutando ${routingKey} na exchange ${exchange}`);
+  console.log(`🎧 Listening to ${routingKey} on exchange ${exchange}`);
 }

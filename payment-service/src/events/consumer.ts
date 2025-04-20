@@ -2,11 +2,13 @@ import { getChannel } from '../config/rabbitmq';
 import { processPayment } from '../services/paymentProcessor';
 import { publishPaymentProcessed } from './publisher';
 
+const exchange = 'orders_exchange';
+
 export const consumeOrderCreated = async () => {
   const channel = getChannel();
-  await channel.assertExchange('orders_exchange', 'fanout', { durable: true });
+  await channel.assertExchange(exchange, 'fanout', { durable: true });
   const q = await channel.assertQueue('', { exclusive: true });
-  channel.bindQueue(q.queue, 'orders_exchange', '');
+  channel.bindQueue(q.queue, exchange, '');
 
   channel.consume(q.queue, async (msg) => {
     if (msg) {

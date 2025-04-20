@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
     const order = await createOrder(req.body);
     res.status(201).json(order);
   } catch (err) {
-    console.error(err);
+    console.log(err);
     res.status(500).json({ error: 'error creating order' });
   }
 });
