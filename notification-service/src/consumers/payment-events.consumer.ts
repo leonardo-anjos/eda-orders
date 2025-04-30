@@ -19,7 +19,7 @@ export async function consumePaymentEvents(channel: Channel) {
 
     try {
       const data: PaymentEvent = JSON.parse(msg.content.toString());
-      console.log(`[notification-service]: PAYMENT: order ${data.orderId} - status ${data.status.toUpperCase()}`);
+      console.log(`[notification-service] PAYMENT: order ${data.orderId} - status ${data.status.toUpperCase()}`);
 
       // send emal, push, SMS, etc.
 

@@ -22,7 +22,7 @@ export async function consumeOrderCreated(channel: Channel) {
 
     try {
       const data: OrderCreatedEvent = JSON.parse(msg.content.toString());
-      console.log(`[notification-service]: ORDER: order ${data.id} - user ${data.userId}`);
+      console.log(`[notification-service] ORDER: order ${data.id} - user ${data.userId}`);
 
       // send emal, push, SMS, etc.
 

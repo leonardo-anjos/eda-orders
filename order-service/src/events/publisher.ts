@@ -22,7 +22,7 @@ export async function publishOrderCreated(order: any) {
     ch!.publish(exchange, '', Buffer.from(message));
     console.log('[new order]', order.id);
   } catch (error) {
-    console.error('[order error]:', error);
+    console.error('[order error]', error);
   }
 }
 
