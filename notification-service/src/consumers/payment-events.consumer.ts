@@ -1,4 +1,10 @@
-import { Channel } from 'amqplib';
+import { Channel, ConsumeMessage } from 'amqplib';
+
+type PaymentEvent = {
+  orderId: string;
+  status: string;
+  timestamp: number;
+};
 
 export async function consumePaymentEvents(channel: Channel) {
   const exchange = 'payments_exchange';
@@ -6,16 +12,22 @@ export async function consumePaymentEvents(channel: Channel) {
   await channel.assertExchange(exchange, 'fanout', { durable: true });
 
   const { queue } = await channel.assertQueue('', { exclusive: true });
-
   await channel.bindQueue(queue, exchange, '');
 
-  channel.consume(queue, (msg) => {
-    if (msg) {
-      const data = JSON.parse(msg.content.toString());
-      console.log(`📢 Notification: Payment event received for order ${data.orderId}`);
+  channel.consume(queue, (msg: ConsumeMessage | null) => {
+    if (!msg) return;
+
+    try {
+      const data: PaymentEvent = JSON.parse(msg.content.toString());
+      console.log(`[notification-service]: PAYMENT: order ${data.orderId} - status ${data.status.toUpperCase()}`);
+
+      // send emal, push, SMS, etc.
+
       channel.ack(msg);
+    } catch (err) {
+      console.error('[notification-service] failed notification payment', err);
+      // reprocess message (nack) or ignore (ack)
+      // channel.nack(msg, false, false);
     }
   });
-
-  console.log(`🎧 Listening for payment events on exchange ${exchange}`);
 }
