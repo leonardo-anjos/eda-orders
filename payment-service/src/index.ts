@@ -5,8 +5,8 @@ import { consumeOrderCreated } from './events/consumer';
   try {
     await connectRabbitMQ();
     await consumeOrderCreated();
-    console.log('✅ Payment Service is running');
+    console.log('[processor] payment-service UP');
   } catch (error) {
-    console.error('❌ Error starting payment service:', error);
+    console.error('[processor] payment-service DOWN', error);
   }
 })();

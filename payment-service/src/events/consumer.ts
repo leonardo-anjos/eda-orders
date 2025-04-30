@@ -13,6 +13,7 @@ export const consumeOrderCreated = async () => {
   channel.consume(q.queue, async (msg) => {
     if (msg) {
       const order = JSON.parse(msg.content.toString());
+      
       const status = processPayment();
 
       const payment = {
@@ -20,10 +21,9 @@ export const consumeOrderCreated = async () => {
         status,
         timestamp: new Date().toISOString()
       };
-
+      
       await publishPaymentProcessed(payment);
       channel.ack(msg);
-      console.log(`💰 Payment ${status.toUpperCase()} for Order ${order.id}`);
     }
   });
 };

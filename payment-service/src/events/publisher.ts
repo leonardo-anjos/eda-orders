@@ -10,5 +10,5 @@ export const publishPaymentProcessed = async (payment: Payment) => {
 
   const message = Buffer.from(JSON.stringify(payment));
   channel.publish(exchange, '', message);
-  console.log(`[x] Payment processed event published: ${message.toString()}`);
+  console.log(`[new payment] order ${payment.orderId} - status ${payment.status.toUpperCase()}`);
 };
